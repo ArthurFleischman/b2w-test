@@ -4,18 +4,18 @@
 
 # routes
 ## GET
-`/planets`
-`/planet/id/:id`
-`/planet/name/:name`
+### `/planets`
+### `/planet/id/:id`
+### `/planet/name/:name`
 ## POST
-`/new/planet`
+### `/new/planet`
 ## REMOVE
-`/delete/planet/:id`
+### `/delete/planet/:id`
 
 # Data format
 
 ```json
-    {
+{
     "id": int //do not use,setted automatically, if used it will be overwritten
     "name": string,
     "climate": string,
