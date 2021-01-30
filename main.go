@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	url string = "mongodb://localhost:27017"
+	url string = "mongodb://mongodb:27017"
 )
 
 var (
@@ -18,6 +18,7 @@ func main() {
 	printDetails()
 	//start DB client, and storing connection client in context
 	if err := startDBConnection(); err != nil {
+		log.Println("could not found mongodb")
 		log.Fatalln(err)
 	}
 	//start API service

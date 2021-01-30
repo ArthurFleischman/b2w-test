@@ -86,6 +86,7 @@ func deletePlanetByID(c *gin.Context) {
 
 //StartWebService : start API service
 func startWebService() error {
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	//GET
 	r.GET("/planets", getPlanets)

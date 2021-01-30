@@ -1,0 +1,17 @@
+version: "3.3"  # optional since v1.27.0
+services:
+  api:
+    networks: 
+      - net1
+    build: .
+    ports:
+      - "8080:8080"  
+  mongodb:
+    networks: 
+      - net1
+    image: mongo
+    ports: 
+      - "27017:27017"
+networks: 
+  net1:
+    driver: bridge
