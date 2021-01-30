@@ -78,6 +78,16 @@ func GETPlanetByID(db *mgo.Session, id int) (*Planet, error) {
 	}
 }
 
+//GETPlanetByName fetch planet by its name
+func GETPlanetByName(db *mgo.Session, name string) (*Planet, error) {
+	gotPlanet := Planet{}
+	if err := db.DB("b2w").C("planets").Find(bson.M{"name": name}).One(&gotPlanet); err != nil {
+		return nil, err
+	} else {
+		return &gotPlanet, nil
+	}
+}
+
 //InsertPlanet Create a planet in database
 func InsertPlanet(newPlanet Planet, db *mgo.Session) error {
 	if err := db.DB("b2w").C("planets").Insert(&newPlanet); err != nil {

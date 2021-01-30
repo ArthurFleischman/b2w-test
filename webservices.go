@@ -35,6 +35,18 @@ func getPlanetByID(c *gin.Context) {
 		}
 	}
 }
+
+func getPlanetByName(c *gin.Context) {
+	name := c.Param("name")
+	if planet, err := planet.GETPlanetByName(_db, name); err != nil {
+		log.Println(err)
+		c.String(http.StatusNotFound, "could not found planet")
+	} else {
+		log.Printf("%s received planet with id %d\n", c.ClientIP(), planet.ID)
+		c.JSON(http.StatusOK, planet)
+	}
+}
+
 func insertPlanet(c *gin.Context) {
 	newPlanet := planet.Planet{}
 	c.BindJSON(&newPlanet)
@@ -61,7 +73,8 @@ func startWebService() error {
 	r := gin.New()
 	//GET
 	r.GET("/planets", getPlanets)
-	r.GET("/planet/:id", getPlanetByID)
+	r.GET("/planet/id/:id", getPlanetByID)
+	r.GET("/planet/name/:name", getPlanetByName)
 	//POST
 	creationPath := r.Group("/new")
 	creationPath.POST("/planet", insertPlanet)
