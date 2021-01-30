@@ -119,4 +119,5 @@ func startDBConnection() error {
 func printDetails() {
 	//put here all printing specifications
 	log.Println("system started")
+	log.Println("system running at http://127.0.0.1:8080")
 }

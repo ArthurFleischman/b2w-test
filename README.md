@@ -23,3 +23,9 @@
     "appearances": int //do not use, setted automatically, if used it will be overwritten
 }
 ```
+
+# running
+## running with attached to terminal
+`docker compose up`
+## running without terminal
+`docker compose up -d`
