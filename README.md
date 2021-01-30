@@ -16,10 +16,10 @@
 
 ```json
     {
-    "id": int //do not use,setted automatically, if used it will be overwriten
+    "id": int //do not use,setted automatically, if used it will be overwritten
     "name": string,
     "climate": string,
     "terrain": string,
-    "appearances": int //do not use, setted automatically, if used it will be overwriten
+    "appearances": int //do not use, setted automatically, if used it will be overwritten
 }
 ```
