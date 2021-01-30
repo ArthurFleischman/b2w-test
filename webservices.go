@@ -58,13 +58,29 @@ func insertPlanet(c *gin.Context) {
 	log.Printf("trying to insert planet %d\n", newPlanet.ID)
 
 	//try to insert planet
-	if err := planet.InsertPlanet(newPlanet, _db); err != nil {
+	if err := planet.InsertPlanet(_db, newPlanet); err != nil {
 		log.Println(err)
 		c.String(http.StatusInternalServerError, "could not insert planet")
 	} else {
 		responseMessage := fmt.Sprintf("planet id: %d inserted successfully", newPlanet.ID)
 		log.Printf(responseMessage)
 		c.String(http.StatusCreated, responseMessage)
+	}
+}
+
+func deletePlanetByID(c *gin.Context) {
+	if id, err := strconv.Atoi(c.Param("id")); err != nil {
+		log.Println("invalid id")
+		c.String(http.StatusBadRequest, "invalid id")
+	} else {
+		if err := planet.DeletePlanetByID(_db, id); err != nil {
+			log.Println(err)
+			c.String(http.StatusNotFound, "could not delete palnet")
+		} else {
+			message := fmt.Sprintf("planet id: %d deleted by ip: %s", id, c.ClientIP())
+			log.Println(message)
+			c.JSON(http.StatusOK, message)
+		}
 	}
 }
 
@@ -76,9 +92,9 @@ func startWebService() error {
 	r.GET("/planet/id/:id", getPlanetByID)
 	r.GET("/planet/name/:name", getPlanetByName)
 	//POST
-	creationPath := r.Group("/new")
-	creationPath.POST("/planet", insertPlanet)
+	r.POST("/new/planet", insertPlanet)
 	//REMOVE
+	r.DELETE("/delete/planet/:id", deletePlanetByID)
 
 	return r.Run()
 }

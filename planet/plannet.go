@@ -71,7 +71,7 @@ func GetPlanets(db *mgo.Session) ([]Planet, error) {
 func GETPlanetByID(db *mgo.Session, id int) (*Planet, error) {
 	gotPlanet := Planet{}
 
-	if err := db.DB("b2w").C("planets").Find(bson.M{"_id": id}).One(&gotPlanet); err != nil {
+	if err := db.DB("b2w").C("planets").FindId(id).One(&gotPlanet); err != nil {
 		return nil, err
 	} else {
 		return &gotPlanet, nil
@@ -89,8 +89,17 @@ func GETPlanetByName(db *mgo.Session, name string) (*Planet, error) {
 }
 
 //InsertPlanet Create a planet in database
-func InsertPlanet(newPlanet Planet, db *mgo.Session) error {
+func InsertPlanet(db *mgo.Session, newPlanet Planet) error {
 	if err := db.DB("b2w").C("planets").Insert(&newPlanet); err != nil {
+		return err
+	} else {
+		return nil
+	}
+}
+
+//DeletePlanetByID delete planet data by id
+func DeletePlanetByID(db *mgo.Session, id int) error {
+	if err := db.DB("b2w").C("planets").RemoveId(id); err != nil {
 		return err
 	} else {
 		return nil
