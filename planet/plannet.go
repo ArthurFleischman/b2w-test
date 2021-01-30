@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/peterhellberg/swapi"
 	"gopkg.in/mgo.v2"
@@ -18,16 +17,16 @@ type queryPlanet struct {
 
 //Planet represents the plannet data struct
 type Planet struct {
-	ID          bson.ObjectId `json:"id" bson:"_id"`
-	Name        string        `json:"name" bson:"name"`
-	Climate     string        `json:"climate" Gbson:"climate"`
-	Terrain     string        `json:"terrain" bson:"terrain"`
-	Appearances int           `json:"appearances" bson:"appearances"`
+	ID          int    `json:"id" bson:"_id"`
+	Name        string `json:"name" bson:"name"`
+	Climate     string `json:"climate" Gbson:"climate"`
+	Terrain     string `json:"terrain" bson:"terrain"`
+	Appearances int    `json:"appearances" bson:"appearances"`
 }
 
 //SetID sets bson id into model
 func (p *Planet) SetID() {
-	p.ID = bson.NewObjectId()
+	p.ID = int(bson.NewObjectId().Counter())
 }
 
 func fetchDataFromAPI(name string) ([]string, error) {
@@ -55,10 +54,7 @@ func (p *Planet) SetApearences() error {
 	}
 }
 
-//GETIDFormated get formated id
-func (p *Planet) GETIDFormated() string {
-	return strings.Split(p.ID.String(), "\"")[1]
-}
+//API OPERATIONS
 
 //GetPlanets fetch all planets data
 func GetPlanets(db *mgo.Session) ([]Planet, error) {
@@ -68,6 +64,17 @@ func GetPlanets(db *mgo.Session) ([]Planet, error) {
 		return nil, err
 	} else {
 		return planetList, nil
+	}
+}
+
+//GETPlanetByID auto explicative
+func GETPlanetByID(db *mgo.Session, id int) (*Planet, error) {
+	gotPlanet := Planet{}
+
+	if err := db.DB("b2w").C("planets").Find(bson.M{"_id": id}).One(&gotPlanet); err != nil {
+		return nil, err
+	} else {
+		return &gotPlanet, nil
 	}
 }
 
